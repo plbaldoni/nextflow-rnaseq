@@ -1,4 +1,5 @@
 process salmon {
+  container 'quay.io/biocontainers/salmon:1.10.0--h7e5ed60_0'
   memory '64GB'
   cpus 8
   time '4 h'
@@ -11,7 +12,7 @@ process salmon {
 
   script:
     """
-    $params.salmonBin quant --dumpEq --writeUnmappedNames --numBootstraps 100 \
+    salmon quant --dumpEq --writeUnmappedNames --numBootstraps 100 \
     -i $params.salmonIindex \
     -l A \
     -p $task.cpus \

@@ -1,5 +1,5 @@
-process multiqc_align {
-  module 'MultiQC/1.10.1'
+process multiqc_quant {
+  container 'quay.io/biocontainers/multiqc:1.15--pyhdfd78af_0'
   memory '32GB'
   cpus 4
   time '1 h'

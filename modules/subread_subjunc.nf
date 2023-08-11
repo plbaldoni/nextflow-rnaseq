@@ -1,6 +1,6 @@
 process subread_subjunc {
-  module 'subread/2.0.6'
-  module 'samtools/1.17'
+  container 'quay.io/biocontainers/subread:2.0.6--he4a0461_0'
+  container 'quay.io/biocontainers/samtools:1.17--hd87286a_1'
   memory '64GB'
   cpus 4
   time '1 h'
@@ -22,8 +22,8 @@ process subread_subjunc {
     -R ${reads[1]} \
     -o ${outbam} \
     -T $task.cpus \
-    -a $params.subreadAnno \
-    -F $params.subreadAnnoFormat
+    -a $params.subreadSAF \
+    -F SAF
     
     samtools index ${outbam} 
     samtools stat ${outbam} > ${outstat}
