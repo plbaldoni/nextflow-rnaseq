@@ -12,7 +12,7 @@ process salmon {
 
   script:
     """
-    salmon quant --dumpEq --writeUnmappedNames --numBootstraps 100 \
+    salmon quant --dumpEq --numBootstraps 100 \
     -i $params.salmonIindex \
     -l A \
     -p $task.cpus \
