@@ -3,6 +3,7 @@ process salmon {
   memory '64GB'
   cpus 8
   time '4 h'
+  publishDir params.outdir, mode: 'copy'
 
   input:
     tuple val(sample_id), path(reads)
