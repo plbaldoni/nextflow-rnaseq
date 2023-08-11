@@ -1,4 +1,4 @@
-process multiqc {
+process multiqc_align {
   module 'MultiQC/1.10.1'
   memory '32GB'
   cpus 4
@@ -9,8 +9,7 @@ process multiqc {
     file qc
     file alignment
     file coverage
-    file quant
-    
+
   output:
     path "multiqc"
 
