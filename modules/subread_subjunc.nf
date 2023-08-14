@@ -1,7 +1,7 @@
 process subread_subjunc {
   module 'subread/2.0.6'
   module 'samtools/1.18'
-  memory '64GB'
+  memory '128GB'
   cpus 4
   time '1 h'
   publishDir params.outdir, mode: 'copy', pattern: '*.{bam,bam.bai}'
