@@ -10,7 +10,7 @@ process subread_subjunc {
     tuple val(sample_id), path(reads)
     
   output:
-    file "*.{bam,bai,stat}"
+    file "*.{bam,bai,stat,bed,vcf,summary}"
 
   script:
     outbam = "${sample_id}.bam"
