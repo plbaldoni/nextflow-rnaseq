@@ -15,6 +15,6 @@ process multiqc_quant {
   script:
     """
     mkdir -p multiqc
-    multiqc -o multiqc .
+    multiqc --interactive -o multiqc .
     """ 
 }

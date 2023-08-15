@@ -17,6 +17,6 @@ process multiqc_align {
   script:
     """
     mkdir -p multiqc
-    multiqc -o multiqc .
+    multiqc --interactive -o multiqc .
     """ 
 }
