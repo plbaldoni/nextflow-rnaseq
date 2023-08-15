@@ -1,5 +1,5 @@
 process subread_subjunc {
-  module 'subread/2.0.6'
+  container 'quay.io/biocontainers/subread:2.0.6--he4a0461_0'
   module 'samtools/1.18'
   memory '64GB'
   cpus 4
