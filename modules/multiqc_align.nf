@@ -8,6 +8,7 @@ process multiqc_align {
   input:
     file qc
     file alignment
+    file index
     file coverage
 
   output:

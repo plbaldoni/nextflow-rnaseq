@@ -1,7 +1,7 @@
 params.outdir = "$launchDir"
 params.reads = "$launchDir/*{R1,R2}_001.fastq.gz"
-params.salmonIindex = "$launchDir/salmon_index"
-params.subreadIindex = "$launchDir/subread_index"
+params.salmonIndex = "$launchDir/salmon_index"
+params.subreadIndex = "$launchDir/subread_index"
 params.subreadSAF = "$launchDir/subread_saf"
 params.quant = false
 params.align = false
@@ -14,6 +14,7 @@ include { subread_subjunc } from './modules/subread_subjunc'
 include { coverage } from './modules/coverage'
 include { multiqc_align } from './modules/multiqc_align'
 include { repair } from './modules/repair'
+include { index } from './modules/index'
 
 workflow {
   
@@ -29,7 +30,8 @@ workflow {
   }
   if ( params.align ) {
     ch_subread_subjunc = subread_subjunc(ch_reads)
-    ch_cov = coverage(ch_subread_subjunc)
-    ch_multiqc = multiqc_align(ch_fastqc.collect(),ch_subread_subjunc.collect(),ch_cov.collect())
+    ch_index = index(ch_subread_subjunc)
+    ch_cov = coverage(ch_subread_subjunc,ch_index)
+    ch_multiqc = multiqc_align(ch_fastqc.collect(),ch_subread_subjunc.collect(),ch_index.collect(),ch_cov.collect())
   }
 }

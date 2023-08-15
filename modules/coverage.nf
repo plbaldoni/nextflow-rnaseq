@@ -7,6 +7,7 @@ process coverage {
   
   input:
     file alignment
+    file index
 
   output:
     file "${alignment[0].baseName}.bw"

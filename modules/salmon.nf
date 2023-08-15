@@ -14,7 +14,7 @@ process salmon {
   script:
     """
     salmon quant --dumpEq --numBootstraps 100 \
-    -i $params.salmonIindex \
+    -i $params.salmonIndex \
     -l A \
     -p $task.cpus \
     -1 ${reads[0]} \
