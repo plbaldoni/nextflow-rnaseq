@@ -1,6 +1,6 @@
 process repair {
   container 'quay.io/biocontainers/bbmap:39.01--h92535d8_1'
-  memory '32GB'
+  memory '128GB'
   cpus 4
   time '1 h'
 
@@ -14,6 +14,6 @@ process repair {
     """
     zcat ${reads[0]} > in1.fq
     zcat ${reads[1]} > in2.fq
-    repair.sh -Xmx24g in=in1.fq in2=in2.fq out=${reads[0].simpleName}.fastq out2=${reads[1].simpleName}.fastq
+    repair.sh -Xmx100g in=in1.fq in2=in2.fq out=${reads[0].simpleName}.fastq out2=${reads[1].simpleName}.fastq
     """
 }
