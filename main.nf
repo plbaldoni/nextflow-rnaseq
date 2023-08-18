@@ -5,6 +5,7 @@ params.subreadIndex = "$launchDir/subread_index"
 params.subreadSAF = "$launchDir/subread_saf"
 params.quant = false
 params.align = false
+params.norepair = false
 params.gsize = 3117275501 // CHM13v2.0 size (https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_009914755.4/)
 
 include { fastqc } from './modules/fastqc'
@@ -18,9 +19,11 @@ include { index } from './modules/index'
 
 workflow {
   
-  reads = Channel.fromFilePairs(params.reads, checkIfExists: true)
-  
-  ch_reads = repair(reads)
+  if ( params.norepair )
+    ch_reads = Channel.fromFilePairs(params.reads, checkIfExists: true)
+  else
+    reads = Channel.fromFilePairs(params.reads, checkIfExists: true)
+    ch_reads = repair(reads)
   
   ch_fastqc = fastqc(ch_reads)
   
