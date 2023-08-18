@@ -19,12 +19,13 @@ include { index } from './modules/index'
 
 workflow {
   
-  if ( params.norepair )
+  if ( params.norepair ) {
     ch_reads = Channel.fromFilePairs(params.reads, checkIfExists: true)
-  else
-    reads = Channel.fromFilePairs(params.reads, checkIfExists: true)
-    ch_reads = repair(reads)
-  
+  }
+  else {
+    ch_reads = repair(Channel.fromFilePairs(params.reads, checkIfExists: true))
+  }
+
   ch_fastqc = fastqc(ch_reads)
   
   if ( params.quant ) {
