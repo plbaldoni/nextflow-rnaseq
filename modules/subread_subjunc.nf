@@ -14,6 +14,6 @@ process subread_subjunc {
   script:
     outbam = "${sample_id}.bam"
     """
-    subjunc --sortReadsByCoordinates -i $params.subreadIndex -r ${reads[0]} -R ${reads[1]} -o ${outbam} -T $task.cpus -a $params.subreadSAF -F SAF
+    subjunc --sortReadsByCoordinates -i $params.subreadIndex -r ${reads[0]} -R ${reads[1]} -o ${outbam} -T $task.cpus -a $params.subreadAnno -F $params.subreadAnnoType
     """
 }
