@@ -2,7 +2,7 @@ process subread_subjunc {
   container 'quay.io/biocontainers/subread:2.0.6--he4a0461_0'
   memory '64GB'
   cpus 4
-  time '8 h'
+  time params.subreadTime
   publishDir params.outdir, mode: 'copy', pattern: '*.{bam,bed,vcf,summary}'
 
   input:

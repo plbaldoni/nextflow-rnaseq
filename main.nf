@@ -9,6 +9,8 @@ params.align = false
 params.norepair = false
 params.gsize = 3117275501 // CHM13v2.0 size (https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_009914755.4/)
 params.singleEnd = false
+params.salmonTime = "8h"
+params.subreadTime = "8h"
 
 include { fastqc } from './modules/fastqc'
 include { multiqc_quant } from './modules/multiqc_quant'

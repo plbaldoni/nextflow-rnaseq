@@ -2,7 +2,7 @@ process salmon {
   container 'quay.io/biocontainers/salmon:1.10.0--h7e5ed60_0'
   memory '64GB'
   cpus 8
-  time '4 h'
+  time params.salmonTime
   publishDir params.outdir, mode: 'copy'
 
   input:
