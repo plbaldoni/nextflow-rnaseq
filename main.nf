@@ -8,6 +8,7 @@ params.quant = false
 params.align = false
 params.norepair = false
 params.gsize = 3117275501 // CHM13v2.0 size (https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_009914755.4/)
+params.singleEnd = false
 
 include { fastqc } from './modules/fastqc'
 include { multiqc_quant } from './modules/multiqc_quant'
@@ -21,10 +22,15 @@ include { index } from './modules/index'
 workflow {
   
   if ( params.norepair ) {
-    ch_reads = Channel.fromFilePairs(params.reads, checkIfExists: true)
+    ch_reads = Channel.fromFilePairs(params.reads, size: params.singleEnd ? 1 : 2, checkIfExists: true)
   }
   else {
-    ch_reads = repair(Channel.fromFilePairs(params.reads, checkIfExists: true))
+    if ( params.singleEnd ) {
+      error "Repair is only possible for paired-end reads"
+    }
+    else {
+      ch_reads = repair(Channel.fromFilePairs(params.reads, checkIfExists: true)) 
+    }
   }
 
   ch_fastqc = fastqc(ch_reads)

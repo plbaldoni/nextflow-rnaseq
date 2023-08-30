@@ -11,7 +11,10 @@ process fastqc {
     file "*_fastqc.{zip,html}"
 
   script:
+    def single = reads instanceof Path
+    def read1 = !single ? /"${reads[0]}"/ : /"${reads}"/
+    def read2 = !single ? /"${reads[1]}"/ : ''
     """
-    fastqc --threads $task.cpus --format fastq ${reads[0]} ${reads[1]}
+    fastqc --threads $task.cpus --format fastq ${read1} ${read2}
     """
 }

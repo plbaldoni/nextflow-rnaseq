@@ -12,8 +12,11 @@ process subread_subjunc {
     file '*.{bam,bed,vcf,summary}'
 
   script:
+    def single = reads instanceof Path
+    def read1 = !single ? /-r "${reads[0]}"/ : /-r "${reads}"/
+    def read2 = !single ? /-R "${reads[1]}"/ : ''
     outbam = "${sample_id}.bam"
     """
-    subjunc --sortReadsByCoordinates -i $params.subreadIndex -r ${reads[0]} -R ${reads[1]} -o ${outbam} -T $task.cpus -a $params.subreadAnno -F $params.subreadAnnoType
+    subjunc --sortReadsByCoordinates -i $params.subreadIndex ${read1} ${read2} -o ${outbam} -T $task.cpus -a $params.subreadAnno -F $params.subreadAnnoType
     """
 }
