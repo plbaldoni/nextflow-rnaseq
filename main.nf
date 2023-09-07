@@ -2,6 +2,7 @@ params.outdir = "$launchDir"
 params.reads = "$launchDir/*{R1,R2}_001.fastq.gz"
 params.salmonIndex = "$launchDir/salmon_index"
 params.subreadIndex = "$launchDir/subread_index"
+params.subreadGenome = "$launchDir/genome.fa.gz"
 params.subreadAnno = "$launchDir/subread_saf"
 params.subreadAnnoType = "SAF"
 params.quant = false
@@ -20,6 +21,8 @@ include { coverage } from './modules/coverage'
 include { multiqc_align } from './modules/multiqc_align'
 include { repair } from './modules/repair'
 include { index } from './modules/index'
+include { subread_exon_counts } from './modules/subread_exon_counts'
+include { subread_gene_counts } from './modules/subread_gene_counts'
 
 workflow {
   
@@ -45,6 +48,8 @@ workflow {
     ch_subread_subjunc = subread_subjunc(ch_reads)
     ch_index = index(ch_subread_subjunc)
     ch_cov = coverage(ch_subread_subjunc,ch_index)
+    ch_gene_counts = subread_gene_counts(ch_subread_subjunc.collect(),ch_index.collect())
+    ch_exon_counts = subread_exon_counts(ch_subread_subjunc.collect(),ch_index.collect())
     ch_multiqc = multiqc_align(ch_fastqc.collect(),ch_subread_subjunc.collect(),ch_index.collect(),ch_cov.collect())
   }
 }
