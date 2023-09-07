@@ -14,7 +14,7 @@ process coverage {
 
   script:
     """
-    bamCoverage --verbose --ignoreForNormalization chrX chrM --normalizeUsing CPM \
+    bamCoverage --verbose --ignoreForNormalization chrX chrY chrM --normalizeUsing CPM --binSize 10 \
     --bam ${alignment[0]} \
     --outFileName ${alignment[0].baseName}.bw \
     --outFileFormat bigwig \
