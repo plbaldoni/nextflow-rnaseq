@@ -47,7 +47,7 @@ workflow {
   if ( params.align ) {
     ch_subread_subjunc = subread_subjunc(ch_reads)
     ch_index = index(ch_subread_subjunc)
-    ch_cov = coverage(ch_subread_subjunc,ch_index)
+    ch_cov = ch_subread_subjunc | join(ch_index) | coverage
     ch_gene_counts = subread_gene_counts(ch_subread_subjunc.collect(),ch_index.collect())
     ch_exon_counts = subread_exon_counts(ch_subread_subjunc.collect(),ch_index.collect())
     ch_multiqc = multiqc_align(ch_fastqc.collect(),ch_subread_subjunc.collect(),ch_index.collect(),ch_cov.collect())

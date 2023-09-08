@@ -6,8 +6,7 @@ process coverage {
   publishDir params.outdir, mode: 'copy'
   
   input:
-    file alignment
-    file index
+    tuple path(alignment), path(index)
 
   output:
     file "${alignment[0].baseName}.bw"
