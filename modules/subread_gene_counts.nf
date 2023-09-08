@@ -10,15 +10,15 @@ process subread_gene_counts {
     file index
 
   output:
-    path "featureCounts-gene"
+    path "counts-gene"
   
   script:
     def paired = params.singleEnd ? "" : "-p --countReadPairs"
     """
-    mkdir -p featureCounts-gene
+    mkdir -p counts-gene
     
     # -M flag is to count multi-mapping reads and matches the default of Rsubread
     # -O flag is to count reads overlapping multiple meta-features (genes) and does NOT match the default of Rsubread
-    featureCounts --verbose -M -O ${paired} -T $task.cpus -a $params.subreadAnno -F $params.subreadAnnoType -o ./featureCounts-gene/counts *.bam
+    featureCounts --verbose -M -O ${paired} -T $task.cpus -a $params.subreadAnno -F $params.subreadAnnoType -o ./counts-gene/counts *.bam
     """
 }

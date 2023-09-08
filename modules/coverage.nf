@@ -6,16 +6,18 @@ process coverage {
   publishDir params.outdir, mode: 'copy'
   
   input:
-    tuple path(alignment), path(index)
+    tuple val(sample_id), path(outbam), path(outvcf), path(outbed), path(outbai), path(outstat)
 
   output:
-    file "${alignment[0].baseName}.bw"
+    tuple val(sample_id), path(outbw)
 
   script:
+  outbw = "coverage/${outbam.baseName}.bw"
     """
+    mkdir coverage
     bamCoverage --verbose --ignoreForNormalization chrX chrY chrM --normalizeUsing CPM --binSize 10 \
-    --bam ${alignment[0]} \
-    --outFileName ${alignment[0].baseName}.bw \
+    --bam ${outbam} \
+    --outFileName $outbw \
     --outFileFormat bigwig \
     --numberOfProcessors ${task.cpus} \
     --effectiveGenomeSize ${params.gsize}

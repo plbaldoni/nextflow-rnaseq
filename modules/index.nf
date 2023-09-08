@@ -3,17 +3,22 @@ process index {
   memory '32GB'
   cpus 4
   time '1 h'
-  publishDir params.outdir, mode: 'copy', pattern: '*.bai'
+  publishDir params.outdir, mode: 'copy', pattern: 'alignment/*.bai'
 
   input:
-    file alignment
+    tuple val(sample_id), path(outbam), path(outvcf), path(outbed)
     
   output:
-    file "*.{bai,stat}"
+    tuple val(sample_id), path(outbai), path(outstat)
 
   script:
+  outbai = "alignment/${sample_id}.bam.bai"
+  outstat = "alignment/${outbam.simpleName}.stat"
     """
-    samtools index ${alignment[0]} 
-    samtools stat ${alignment[0]} > ${alignment[0].simpleName}.stat
+    mkdir alignment
+    samtools index ${outbam} 
+    samtools stat ${outbam} > ${outbam.simpleName}.stat
+    mv ${outbam}.bai $outbai
+    mv ${outbam.simpleName}.stat $outstat
     """
 }

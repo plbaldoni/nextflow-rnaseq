@@ -10,12 +10,12 @@ process subread_exon_counts {
     file index
 
   output:
-    path "featureCounts-exon"
+    path "counts-exon"
 
   script:
     def paired = params.singleEnd ? "" : "-p --countReadPairs"
     """
-    mkdir -p featureCounts-exon
+    mkdir -p counts-exon
     
     # -M flag is to count multi-mapping reads and matches the default of Rsubread
     # -O flag is to count reads overlapping multiple features (exons) and does NOT match the default of Rsubread
@@ -25,6 +25,6 @@ process subread_exon_counts {
     # --nonSplitOnly is to report, in the counts object, only reads that are within exon boundaries. This is to avoid counting reads with the -J option multiple times.
     featureCounts \
     -f -J -G $params.subreadGenome --nonSplitOnly \
-    --verbose -M -O ${paired} -T $task.cpus -a $params.subreadAnno -F $params.subreadAnnoType -o ./featureCounts-exon/counts *.bam
+    --verbose -M -O ${paired} -T $task.cpus -a $params.subreadAnno -F $params.subreadAnnoType -o ./counts-exon/counts *.bam
     """
 }

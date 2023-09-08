@@ -3,20 +3,23 @@ process subread_subjunc {
   memory '64GB'
   cpus 4
   time params.subreadTime
-  publishDir params.outdir, mode: 'copy', pattern: '*.{bam,bed,vcf,summary}'
+  publishDir params.outdir, mode: 'copy', pattern: 'alignment/*.{bam,bed,vcf}'
 
   input:
     tuple val(sample_id), path(reads)
     
   output:
-    file '*.{bam,bed,vcf,summary}'
+    tuple val(sample_id), path(outbam), path(outvcf), path(outbed)
 
   script:
     def single = reads instanceof Path
     def read1 = !single ? /-r "${reads[0]}"/ : /-r "${reads}"/
     def read2 = !single ? /-R "${reads[1]}"/ : ''
-    outbam = "${sample_id}.bam"
+    outbam = "alignment/${sample_id}.bam"
+    outvcf = "alignment/${sample_id}.bam.indel.vcf"
+    outbed = "alignment/${sample_id}.bam.junction.bed"
     """
+    mkdir alignment
     subjunc --sortReadsByCoordinates -i $params.subreadIndex ${read1} ${read2} -o ${outbam} -T $task.cpus -a $params.subreadAnno -F $params.subreadAnnoType
     """
 }
