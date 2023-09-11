@@ -12,6 +12,8 @@ params.gsize = 3117275501 // CHM13v2.0 size (https://www.ncbi.nlm.nih.gov/datase
 params.singleEnd = false
 params.salmonTime = "8h"
 params.subreadTime = "8h"
+params.salmonOptions = "--dumpEq --numBootstraps 100 -l A"
+params.subjuncOptions = "--sortReadsByCoordinates"
 
 include { fastqc } from './modules/fastqc'
 include { multiqc_quant } from './modules/multiqc_quant'
@@ -23,6 +25,7 @@ include { repair } from './modules/repair'
 include { index } from './modules/index'
 include { subread_exon_counts } from './modules/subread_exon_counts'
 include { subread_gene_counts } from './modules/subread_gene_counts'
+include { quant_transcript_counts } from './modules/quant_transcript_counts'
 
 workflow {
   
@@ -42,6 +45,7 @@ workflow {
   
   if ( params.quant ) {
     ch_salmon = salmon(ch_reads)
+    ch_tx_counts = quant_transcript_counts(ch_salmon.collect())
     ch_multiqc = multiqc_quant(ch_fastqc.collect(),ch_salmon.collect())
   }
   if ( params.align ) {
