@@ -18,7 +18,6 @@ process subread_gene_counts {
     mkdir -p counts-gene
     
     # -M flag is to count multi-mapping reads and matches the default of Rsubread
-    # -O flag is to count reads overlapping multiple meta-features (genes) and does NOT match the default of Rsubread
-    featureCounts --verbose -M -O ${paired} -T $task.cpus -a $params.subreadAnno -F $params.subreadAnnoType -o ./counts-gene/counts *.bam
+    featureCounts $params.featureCountsGeneOptions ${paired} -T $task.cpus -a $params.subreadAnno -F $params.subreadAnnoType -o ./counts-gene/counts *.bam
     """
 }
