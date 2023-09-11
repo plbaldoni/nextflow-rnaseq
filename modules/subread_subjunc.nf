@@ -20,6 +20,6 @@ process subread_subjunc {
     outbed = "alignment/${sample_id}.bam.junction.bed"
     """
     mkdir alignment
-    subjunc --sortReadsByCoordinates -i $params.subreadIndex ${read1} ${read2} -o ${outbam} -T $task.cpus -a $params.subreadAnno -F $params.subreadAnnoType
+    subjunc $params.subjuncOptions -i $params.subreadIndex ${read1} ${read2} -o ${outbam} -T $task.cpus -a $params.subreadAnno -F $params.subreadAnnoType
     """
 }

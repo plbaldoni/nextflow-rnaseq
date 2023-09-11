@@ -9,19 +9,20 @@ process salmon {
     tuple val(sample_id), path(reads)
     
   output:
-    path "$sample_id"
+    tuple val(sample_id), path(outsf)
 
   script:
     def single = reads instanceof Path
     def read1 = !single ? /-1 "${reads[0]}"/ : /-r "${reads}"/
     def read2 = !single ? /-2 "${reads[1]}"/ : ''
+    outsf = "quantification/$sample_id"
     """
-    salmon quant --dumpEq --numBootstraps 100 \
+    mkdir -p quantification/$sample_id
+    salmon quant $params.salmonOptions \
     -i $params.salmonIndex \
-    -l A \
     -p $task.cpus \
     ${read1} \
     ${read2} \
-    -o $sample_id
+    -o $outsf
     """
 }
