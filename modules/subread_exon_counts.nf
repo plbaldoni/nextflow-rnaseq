@@ -23,7 +23,6 @@ process subread_exon_counts {
     # -J is to perform exon-exon junction counting, i.e. to count exon-spanning reads
     # -G is the reference genome to help junction counting
     # --nonSplitOnly is to report, in the counts object, only reads that are within exon boundaries. This is to avoid counting reads with the -J option multiple times.
-    featureCounts $params.featureCountsExonOptions  \
-    --nonSplitOnly $params.subreadGenome ${paired} -T $task.cpus -a $params.subreadAnno -F $params.subreadAnnoType -o ./counts-exon/counts *.bam
+    featureCounts $params.featureCountsExonOptions -G $params.subreadGenome ${paired} -T $task.cpus -a $params.subreadAnno -F $params.subreadAnnoType -o ./counts-exon/counts *.bam
     """
 }

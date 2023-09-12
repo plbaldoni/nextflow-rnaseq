@@ -15,7 +15,7 @@ params.subreadTime = "8h"
 params.salmonOptions = "--dumpEq --numBootstraps 100 -l A"
 params.subjuncOptions = "--sortReadsByCoordinates"
 params.featureCountsGeneOptions = "--verbose -M"
-params.featureCountsExonOptions = "--verbose -M -O -f -J -G"
+params.featureCountsExonOptions = "--verbose -M -O -f -J --nonSplitOnly"
 
 include { fastqc } from './modules/fastqc'
 include { multiqc_quant } from './modules/multiqc_quant'
