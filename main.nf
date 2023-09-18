@@ -1,6 +1,8 @@
 params.outdir = "$launchDir"
 params.reads = "$launchDir/*{R1,R2}_001.fastq.gz"
 params.salmonIndex = "$launchDir/salmon_index"
+params.salmonAnno = "$launchDir/salmon_gtf"
+params.salmonAnnoType = "GTF"
 params.subreadIndex = "$launchDir/subread_index"
 params.subreadGenome = "$launchDir/genome.fa.gz"
 params.subreadAnno = "$launchDir/subread_saf"
@@ -28,6 +30,7 @@ include { index } from './modules/index'
 include { subread_exon_counts } from './modules/subread_exon_counts'
 include { subread_gene_counts } from './modules/subread_gene_counts'
 include { quant_transcript_counts } from './modules/quant_transcript_counts'
+include { quant_gene_counts } from './modules/quant_gene_counts'
 
 workflow {
   
@@ -47,6 +50,7 @@ workflow {
   
   if ( params.quant ) {
     ch_salmon = salmon(ch_reads)
+    ch_gene_counts = quant_gene_counts(ch_salmon.collect())
     ch_tx_counts = quant_transcript_counts(ch_salmon.collect())
     ch_multiqc = multiqc_quant(ch_fastqc.collect(),ch_salmon.collect())
   }

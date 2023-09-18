@@ -4,6 +4,7 @@ process index {
   cpus 4
   time '1 h'
   publishDir params.outdir, mode: 'copy', pattern: 'alignment/*.bai'
+  tag "$sample_id"
 
   input:
     tuple val(sample_id), path(outbam), path(outvcf), path(outbed)

@@ -4,6 +4,7 @@ process salmon {
   cpus 8
   time params.salmonTime
   publishDir params.outdir, mode: 'copy'
+  tag "$sample_id"
 
   input:
     tuple val(sample_id), path(reads)

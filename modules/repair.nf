@@ -3,6 +3,7 @@ process repair {
   memory '128GB'
   cpus 4
   time '1 h'
+  tag "$sample_id"
 
   input:
     tuple val(sample_id), path(reads)

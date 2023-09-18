@@ -3,6 +3,7 @@ process fastqc {
   memory '32GB'
   cpus 4
   time '1 h'
+  tag "$sample_id"
 
   input:
     tuple val(sample_id), path(reads)

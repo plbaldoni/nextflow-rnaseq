@@ -4,6 +4,7 @@ process coverage {
   cpus 8
   time '1 h'
   publishDir params.outdir, mode: 'copy'
+  tag "$sample_id"
   
   input:
     tuple val(sample_id), path(outbam), path(outvcf), path(outbed), path(outbai), path(outstat)

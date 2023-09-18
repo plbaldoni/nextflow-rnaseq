@@ -4,6 +4,7 @@ process subread_subjunc {
   cpus 4
   time params.subreadTime
   publishDir params.outdir, mode: 'copy', pattern: 'alignment/*.{bam,bed,vcf}'
+  tag "$sample_id"
 
   input:
     tuple val(sample_id), path(reads)
