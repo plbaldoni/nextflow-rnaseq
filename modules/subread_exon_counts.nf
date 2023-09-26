@@ -10,12 +10,12 @@ process subread_exon_counts {
     file index
 
   output:
-    path "counts-exon"
+    path "counts-junction"
 
   script:
     def paired = params.singleEnd ? "" : "-p --countReadPairs"
     """
-    mkdir -p counts-exon
+    mkdir -p counts-junction
     
     # -M flag is to count multi-mapping reads and matches the default of Rsubread
     # -O flag is to count reads overlapping multiple features (exons) and does NOT match the default of Rsubread

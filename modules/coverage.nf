@@ -7,7 +7,7 @@ process coverage {
   tag "$sample_id"
   
   input:
-    tuple val(sample_id), path(outbam), path(outvcf), path(outbed), path(outbai), path(outstat)
+    tuple val(sample_id), path(outbam), path(outbai), path(outstat)
 
   output:
     tuple val(sample_id), path(outbw)
