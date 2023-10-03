@@ -18,7 +18,7 @@ params.salmonOptions = "--dumpEq --numBootstraps 100 -l A"
 params.subjuncOptions = "--sortReadsByCoordinates"
 params.alignOptions = "--sortReadsByCoordinates"
 params.featureCountsGeneOptions = "--verbose -M"
-params.featureCountsExonOptions = "--verbose -M -O -f -J --nonSplitOnly"
+params.featureCountsExonOptions = "--verbose -M -f -J --nonSplitOnly"
 params.gsize = 3117275501 // CHM13v2.0 size (https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_009914755.4/)
 
 include { fastqc } from './modules/fastqc'

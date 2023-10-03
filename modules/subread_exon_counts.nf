@@ -18,7 +18,6 @@ process subread_exon_counts {
     mkdir -p counts-junction
     
     # -M flag is to count multi-mapping reads and matches the default of Rsubread
-    # -O flag is to count reads overlapping multiple features (exons) and does NOT match the default of Rsubread
     # -f flag is to perform counting at the feature (exon) level
     # -J is to perform exon-exon junction counting, i.e. to count exon-spanning reads
     # -G is the reference genome to help junction counting
