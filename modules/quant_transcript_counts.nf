@@ -1,5 +1,5 @@
 process quant_transcript_counts {
-  module 'R/4.3.0'
+  container 'quay.io/biocontainers/r-base:4.4.1'
   memory '32GB'
   cpus 4
   time "1h"
@@ -14,6 +14,12 @@ process quant_transcript_counts {
   script:
     """
     #!/usr/bin/env Rscript
+    
+    if (!require("BiocManager", quietly = TRUE))
+      install.packages("BiocManager")
+    BiocManager::install(version = "3.19")
+    BiocManager::install(c('edgeR'))
+    
     library(edgeR)
     
     dir.create("counts-transcript")
