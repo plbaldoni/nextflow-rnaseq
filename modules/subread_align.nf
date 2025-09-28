@@ -1,5 +1,5 @@
 process subread_align {
-  container 'quay.io/biocontainers/subread:2.0.6--he4a0461_0'
+  container 'quay.io/biocontainers/subread:2.1.1--h577a1d6_0'
   memory '64GB'
   cpus 4
   time params.subreadTime

@@ -1,5 +1,5 @@
 process quant_gene_counts {
-  container 'quay.io/biocontainers/r-base:4.4.1'
+  container 'r-base:4.5.1'
   memory '32GB'
   cpus 4
   time "1h"
@@ -17,7 +17,7 @@ process quant_gene_counts {
     
     if (!require("BiocManager", quietly = TRUE))
       install.packages("BiocManager")
-    BiocManager::install(version = "3.19")
+    BiocManager::install(version = "3.21")
     BiocManager::install(c('rtracklayer','Rsubread','tximeta','edgeR','SummarizedExperiment'))
     
     library(rtracklayer)
