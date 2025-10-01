@@ -35,6 +35,7 @@ include { subread_gene_counts } from './modules/subread_gene_counts'
 include { quant_transcript_counts } from './modules/quant_transcript_counts'
 include { quant_gene_counts } from './modules/quant_gene_counts'
 include { subread_align } from './modules/subread_align'
+include { get_rpackages } from './modules/get_rpackages'
 
 workflow {
   
@@ -54,8 +55,11 @@ workflow {
   
   if ( params.quant ) {
     ch_salmon = salmon(ch_reads)
-    ch_gene_counts = quant_gene_counts(ch_salmon.collect())
-    ch_tx_counts = quant_transcript_counts(ch_salmon.collect())
+    
+    def ch_rpackages = get_rpackages(ch_salmon.collect())
+    ch_gene_counts = quant_gene_counts(ch_salmon.collect(),ch_rpackages.out.rpackages_done)
+    ch_tx_counts = quant_transcript_counts(ch_salmon.collect(),ch_rpackages.out.rpackages_done)
+    
     ch_multiqc = multiqc_quant(ch_fastqc.collect(),ch_salmon.collect())
   }
   if ( params.align ) {

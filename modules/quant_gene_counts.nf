@@ -7,6 +7,7 @@ process quant_gene_counts {
 
   input:
     file quant
+    path rpackages_done
 
   output:
     path "counts-gene"
@@ -20,12 +21,6 @@ process quant_gene_counts {
     dir.create(lib, recursive = TRUE, showWarnings = FALSE)
     .libPaths(c(lib, .libPaths()))
     Sys.setenv(R_LIBS_USER = lib)
-
-    if (!requireNamespace("BiocManager", quietly = TRUE))
-      install.packages("BiocManager", lib = lib, repos = "https://cloud.r-project.org")
-
-    BiocManager::install(version = "3.21", ask = FALSE)
-    BiocManager::install("edgeR", lib = lib, ask = FALSE, update = FALSE)
     
     library(rtracklayer)
     library(Rsubread)

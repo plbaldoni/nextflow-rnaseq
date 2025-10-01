@@ -1,4 +1,4 @@
-process quant_transcript_counts {
+process get_rpackages {
   container 'r-base:4.5.1'
   memory '32GB'
   cpus 4
@@ -7,10 +7,9 @@ process quant_transcript_counts {
 
   input:
     file quant
-    path rpackages_done
 
   output:
-    path "counts-transcript"
+    path "rpackages_done.flag", emit: rpackages_done   // <- barrier
   
   script:
     """
@@ -22,13 +21,12 @@ process quant_transcript_counts {
     .libPaths(c(lib, .libPaths()))
     Sys.setenv(R_LIBS_USER = lib)
     
-    library(edgeR)
-    
-    dir.create("counts-transcript")
-    
-    dir.name <- dirname(list.files('.','*.sf',full.names = TRUE,recursive = TRUE,include.dirs = FALSE,no.. = TRUE,ignore.case = FALSE,all.files = FALSE))
-    counts <- catchSalmon(dir.name)
-    
-    saveRDS(object = counts,file = 'counts-transcript/counts.rds')
+    if (!requireNamespace("BiocManager", quietly = TRUE))
+      install.packages("BiocManager", lib = lib, repos = "https://cloud.r-project.org")
+      
+    rpack <- c("edgeR","Rsubread","rtracklayer","SummarizedExperiment","tximeta")
+      
+    BiocManager::install(version = "3.21", ask = FALSE)
+    BiocManager::install(rpack, lib = lib, ask = FALSE, update = FALSE)
     """
 }
