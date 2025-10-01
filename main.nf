@@ -56,7 +56,7 @@ workflow {
   if ( params.quant ) {
     ch_salmon = salmon(ch_reads)
     
-    def ch_rpackages = get_rpackages(ch_salmon.collect())
+    ch_rpackages = get_rpackages(ch_salmon.collect())
     ch_gene_counts = quant_gene_counts(ch_salmon.collect(),ch_rpackages.out.rpackages_done)
     ch_tx_counts = quant_transcript_counts(ch_salmon.collect(),ch_rpackages.out.rpackages_done)
     
