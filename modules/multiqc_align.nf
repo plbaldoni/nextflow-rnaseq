@@ -1,5 +1,5 @@
 process multiqc_align {
-  container 'multiqc/multiqc:1.31'
+  container 'multiqc/multiqc:v1.31'
   memory '32GB'
   cpus 4
   time '1 h'
