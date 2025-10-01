@@ -15,10 +15,17 @@ process quant_gene_counts {
     """
     #!/usr/bin/env Rscript
     
-    if (!require("BiocManager", quietly = TRUE))
-      install.packages("BiocManager")
-    BiocManager::install(version = "3.21")
-    BiocManager::install(c('rtracklayer','Rsubread','tximeta','edgeR','SummarizedExperiment'))
+    ## Use the system TMPDIR if available, otherwise fall back to tempdir()
+    lib <- file.path(Sys.getenv("TMPDIR", tempdir()), "Rlib")
+    dir.create(lib, recursive = TRUE, showWarnings = FALSE)
+    .libPaths(c(lib, .libPaths()))
+    Sys.setenv(R_LIBS_USER = lib)
+
+    if (!requireNamespace("BiocManager", quietly = TRUE))
+      install.packages("BiocManager", lib = lib, repos = "https://cloud.r-project.org")
+
+    BiocManager::install(version = "3.21", ask = FALSE)
+    BiocManager::install("edgeR", lib = lib, ask = FALSE, update = FALSE)
     
     library(rtracklayer)
     library(Rsubread)
