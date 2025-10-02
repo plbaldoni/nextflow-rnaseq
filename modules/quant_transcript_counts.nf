@@ -1,5 +1,5 @@
 process quant_transcript_counts {
-  container 'r-base:4.5.1'
+  module 'R'
   memory '32GB'
   cpus 4
   time "1h"
@@ -7,20 +7,13 @@ process quant_transcript_counts {
 
   input:
     file quant
-    path rpackages_done
-
+    
   output:
     path "counts-transcript"
   
   script:
     """
     #!/usr/bin/env Rscript
-    
-    ## Use the system TMPDIR if available, otherwise fall back to tempdir()
-    lib <- file.path(Sys.getenv("TMPDIR", tempdir()), "Rlib")
-    dir.create(lib, recursive = TRUE, showWarnings = FALSE)
-    .libPaths(c(lib, .libPaths()))
-    Sys.setenv(R_LIBS_USER = lib)
     
     library(edgeR)
     
