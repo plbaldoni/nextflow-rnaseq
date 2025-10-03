@@ -25,6 +25,6 @@ process quant_gene_counts {
     counts.gene <- rowsum(counts.tx[['counts']],counts.tx[['genes']][['GeneID']])
     counts.gene <- DGEList(counts = counts.gene)
     
-    saveRDS(object = countss.gene,file = 'counts-gene/counts.rds')
+    saveRDS(object = counts.gene,file = 'counts-gene/counts.rds')
     """
 }
