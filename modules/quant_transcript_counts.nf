@@ -16,12 +16,24 @@ process quant_transcript_counts {
     #!/usr/bin/env Rscript
     
     library(edgeR)
-    
+    library(SummarizedExperiment)
+    library(rtracklayer)
+        
     dir.create("counts-transcript")
     
     dir.name <- dirname(list.files('.','*.sf',full.names = TRUE,recursive = TRUE,include.dirs = FALSE,no.. = TRUE,ignore.case = FALSE,all.files = FALSE))
     counts <- catchSalmon(dir.name)
     
-    saveRDS(object = counts,file = 'counts-transcript/counts.rds')
+    # Gene gene names
+    gr <- import("$params.salmonAnno")
+    gr.tx <- gr[mcols(gr)[['type']] == 'transcript']
+    gr.gene <- gr[mcols(gr)[['type']] == 'gene']
+    
+    anno <- counts$annotation
+    anno$GeneID <- gr.tx$gene_id[match(rownames(anno),gr.tx$transcript_id)]
+    
+    dge <- DGEList(counts = counts$counts,genes = anno)
+    
+    saveRDS(object = dge,file = 'counts-transcript/counts.rds')
     """
 }

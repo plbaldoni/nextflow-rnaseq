@@ -54,8 +54,8 @@ workflow {
   
   if ( params.quant ) {
     ch_salmon = salmon(ch_reads)
-    ch_gene_counts = quant_gene_counts(ch_salmon.collect())
     ch_tx_counts = quant_transcript_counts(ch_salmon.collect())
+    ch_gene_counts = quant_gene_counts(ch_tx_counts)
     ch_multiqc = multiqc_quant(ch_fastqc.collect(),ch_salmon.collect())
   }
   if ( params.align ) {

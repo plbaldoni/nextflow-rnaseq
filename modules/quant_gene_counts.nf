@@ -6,7 +6,7 @@ process quant_gene_counts {
   publishDir params.outdir, mode: 'copy'
 
   input:
-    file quant
+    file counts
     
   output:
     path "counts-gene"
@@ -15,40 +15,16 @@ process quant_gene_counts {
     """
     #!/usr/bin/env Rscript
     
-    library(rtracklayer)
-    library(Rsubread)
-    library(tximeta)
     library(edgeR)
-    library(SummarizedExperiment)
-    
-    dir.create("counts-gene")
 
-    gr <- import("$params.salmonAnno")
-    gr.tx <- gr[mcols(gr)[['type']] == 'transcript']
-    gr.gene <- gr[mcols(gr)[['type']] == 'gene']
+    dir.create("counts-gene")
     
-    saf <- flattenGTF("$params.salmonAnno")
+    counts.tx <- list.files(path = "",pattern = "counts.rds",recursive = TRUE,full.names = TRUE)
+    counts.tx <- readRDS(counts.tx)
     
-    sf <- list.files('./','*.sf',full.names = TRUE,recursive = TRUE,include.dirs = FALSE,no.. = TRUE,ignore.case = FALSE,all.files = FALSE)
-    coldata <- data.frame(files = sf,names = basename(dirname(sf)))
+    counts.gene <- rowsums(counts.tx$counts,counts.tx$genes$GeneID)
+    counts.gene <- DGEList(counts = counts.gene)
     
-    tx2gene = data.frame(mcols(gr.tx)[['transcript_id']],mcols(gr.tx)[['gene_id']])
-    
-    se <- tximeta(coldata = coldata,tx2gene = tx2gene,txOut = FALSE, skipMeta = TRUE, ignoreAfterBar = TRUE,type = 'salmon',countsFromAbundance = 'no')
-    m <- match(rownames(se),mcols(gr.gene)[['gene_id']])
-    
-    GeneID.Length <- stats::aggregate(saf[['End']] - saf[['Start']],list(GeneID = saf[['GeneID']]),sum)
-    k <- match(rownames(se),GeneID.Length[['GeneID']])
-    
-    df.genes <- data.frame(Chr = seqnames(gr.gene)[m],
-                           Start = start(gr.gene)[m],
-                           End = end(gr.gene)[m],
-                           Strand = strand(gr.gene)[m],
-                           Length = GeneID.Length[['x']][k],
-                           row.names = rownames(se))
-    
-    counts <- DGEList(counts = assay(se),genes = df.genes)
-    
-    saveRDS(object = counts,file = 'counts-gene/counts.rds')
+    saveRDS(object = countss.gene,file = 'counts-gene/counts.rds')
     """
 }
