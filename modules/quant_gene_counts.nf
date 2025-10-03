@@ -19,7 +19,7 @@ process quant_gene_counts {
 
     dir.create("counts-gene")
     
-    counts.tx <- list.files(path = "",pattern = "counts.rds",recursive = TRUE,full.names = TRUE)
+    counts.tx <- list.files(path = ".",pattern = "counts.rds",recursive = TRUE,full.names = TRUE)
     counts.tx <- readRDS(counts.tx)
     
     counts.gene <- rowsums(counts.tx[['counts']],counts.tx[['genes']][['GeneID']])
