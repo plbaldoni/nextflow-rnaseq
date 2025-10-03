@@ -29,10 +29,10 @@ process quant_transcript_counts {
     gr.tx <- gr[mcols(gr)[['type']] == 'transcript']
     gr.gene <- gr[mcols(gr)[['type']] == 'gene']
     
-    anno <- counts$annotation
-    anno$GeneID <- gr.tx$gene_id[match(rownames(anno),gr.tx$transcript_id)]
+    anno <- counts[['annotation']]
+    anno[['GeneID']] <- mcols(gr.tx)[['gene_id']][match(rownames(anno),mcols(gr.tx)[['transcript_id']])]
     
-    dge <- DGEList(counts = counts$counts,genes = anno)
+    dge <- DGEList(counts = counts[['counts']],genes = anno)
     
     saveRDS(object = dge,file = 'counts-transcript/counts.rds')
     """

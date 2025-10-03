@@ -22,7 +22,7 @@ process quant_gene_counts {
     counts.tx <- list.files(path = "",pattern = "counts.rds",recursive = TRUE,full.names = TRUE)
     counts.tx <- readRDS(counts.tx)
     
-    counts.gene <- rowsums(counts.tx$counts,counts.tx$genes$GeneID)
+    counts.gene <- rowsums(counts.tx[['counts']],counts.tx[['genes']][['GeneID']])
     counts.gene <- DGEList(counts = counts.gene)
     
     saveRDS(object = countss.gene,file = 'counts-gene/counts.rds')
